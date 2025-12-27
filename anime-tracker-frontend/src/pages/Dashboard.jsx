@@ -6,7 +6,7 @@ export const Dashboard = () => {
   const logout = useAuth();
 
   const handleLogout = () => {
-    logout();
+    logout;
     navigate("/login");
   };
 

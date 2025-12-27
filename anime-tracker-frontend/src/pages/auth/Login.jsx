@@ -45,8 +45,6 @@ export const Login = () => {
 
       handleToken(response);
 
-      console.log("Login successful!", response);
-
       navigate("/");
     } catch (err) {
       const message = err.response?.data?.message || "Login failed. Try again.";
