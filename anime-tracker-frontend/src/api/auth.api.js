@@ -1,0 +1,11 @@
+import api from "./axios";
+
+export const loginRequest = async (data) => {
+  const response = api.post("/login", data);
+  return response.data;
+};
+
+export const registerRequest = async (data) => {
+  const response = api.post("/register", data);
+  return response.data;
+};
