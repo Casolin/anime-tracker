@@ -1,11 +1,15 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { loginRequest } from "../../api/auth.api";
+import { Link, useNavigate } from "react-router-dom";
+import { handleToken } from "../../utils/token";
 
 export const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+
+  const navigate = useNavigate();
 
   const [error, setError] = useState("");
 
@@ -14,7 +18,7 @@ export const Login = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -34,13 +38,20 @@ export const Login = () => {
       return;
     }
 
-    setError("");
-    console.log("Login successful with email:", formData.email);
+    try {
+      setError("");
 
-    setFormData({
-      email: "",
-      password: "",
-    });
+      const response = await loginRequest(formData);
+
+      handleToken(response);
+
+      console.log("Login successful!", response);
+
+      navigate("/");
+    } catch (err) {
+      const message = err.response?.data?.message || "Login failed. Try again.";
+      showError(message);
+    }
   };
 
   return (
